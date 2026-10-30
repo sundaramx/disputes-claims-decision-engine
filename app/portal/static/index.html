@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Disputes &amp; Claims — Operations Portal</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page: #f9f9f7; --surface-1: #fcfcfb;
+    --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --ring: rgba(11,11,11,0.10);
+    --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a;
+    --good: #0ca30c; --warn: #fab219; --serious: #ec835a; --critical: #d03b3b;
+    --good-text: #006300;
+    --seq-150: #b7d3f6; --seq-300: #6da7ec; --seq-450: #2a78d6; --seq-600: #184f95;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --page: #0d0d0d; --surface-1: #1a1a19;
+      --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --ring: rgba(255,255,255,0.10);
+      --s1: #3987e5; --s2: #d95926; --s3: #199e70;
+      --good-text: #0ca30c;
+      --seq-150: #104281; --seq-300: #1c5cab; --seq-450: #3987e5; --seq-600: #86b6ef;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface-1: #1a1a19;
+    --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --baseline: #383835; --ring: rgba(255,255,255,0.10);
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70;
+    --good-text: #0ca30c;
+    --seq-150: #104281; --seq-300: #1c5cab; --seq-450: #3987e5; --seq-600: #86b6ef;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--page); color: var(--ink);
+    font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  header {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    padding: 14px 22px; border-bottom: 1px solid var(--grid);
+  }
+  header h1 { font-size: 17px; margin: 0; font-weight: 650; }
+  header .sub { color: var(--ink-2); font-size: 12.5px; }
+  .spacer { flex: 1; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 1px solid var(--ring); border-radius: 999px;
+    padding: 3px 10px; font-size: 12px; color: var(--ink-2); background: var(--surface-1);
+  }
+  .chip .dot { width: 8px; height: 8px; border-radius: 50%; }
+  button.ghost {
+    background: none; border: 1px solid var(--ring); border-radius: 8px;
+    color: var(--ink); padding: 5px 11px; font: inherit; font-size: 12.5px; cursor: pointer;
+  }
+  button.ghost:hover { background: var(--surface-1); }
+  nav { display: flex; gap: 4px; padding: 10px 22px 0; flex-wrap: wrap; }
+  nav button {
+    background: none; border: none; border-bottom: 2px solid transparent;
+    color: var(--ink-2); font: inherit; font-size: 13.5px; padding: 8px 12px; cursor: pointer;
+  }
+  nav button.active { color: var(--ink); border-bottom-color: var(--s1); font-weight: 600; }
+  main { padding: 18px 22px 60px; max-width: 1280px; margin: 0 auto; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(158px, 1fr)); gap: 12px; }
+  .tile {
+    background: var(--surface-1); border: 1px solid var(--ring); border-radius: 12px;
+    padding: 12px 14px;
+  }
+  .tile .lbl { color: var(--ink-2); font-size: 12px; }
+  .tile .val { font-size: 26px; font-weight: 650; margin-top: 2px; }
+  .tile .note { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+  .tile.hero .val { font-size: 46px; }
+  .tile .status { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; }
+  .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 14px; margin-top: 16px; }
+  .card {
+    background: var(--surface-1); border: 1px solid var(--ring); border-radius: 12px;
+    padding: 14px 16px; overflow-x: auto;
+  }
+  .card h3 { margin: 0 0 4px; font-size: 13.5px; font-weight: 650; }
+  .card .sub { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
+  .legend { display: flex; gap: 14px; font-size: 12px; color: var(--ink-2); margin: 4px 0 2px; flex-wrap: wrap; }
+  .legend .key { display: inline-flex; align-items: center; gap: 5px; }
+  .legend .sw { width: 10px; height: 10px; border-radius: 3px; }
+  table { border-collapse: collapse; width: 100%; font-size: 12.8px; }
+  th { text-align: left; color: var(--muted); font-weight: 550; padding: 6px 10px 6px 0;
+       border-bottom: 1px solid var(--grid); white-space: nowrap; }
+  td { padding: 7px 10px 7px 0; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.click { cursor: pointer; }
+  tr.click:hover td { background: color-mix(in oklab, var(--s1) 6%, transparent); }
+  .pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 11.5px;
+          border: 1px solid var(--ring); color: var(--ink-2); white-space: nowrap; }
+  .pill.crit { border-color: var(--critical); color: var(--critical); font-weight: 600; }
+  .pill.warn { border-color: var(--warn); color: var(--ink); }
+  .pill.good { border-color: var(--good); color: var(--good-text); }
+  .pill.blue { border-color: var(--s1); color: var(--s1); }
+  #tooltip {
+    position: fixed; pointer-events: none; z-index: 50; display: none;
+    background: var(--surface-1); color: var(--ink); border: 1px solid var(--ring);
+    border-radius: 8px; padding: 6px 10px; font-size: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+  }
+  #detail { margin-top: 6px; }
+  .backlink { color: var(--s1); cursor: pointer; font-size: 13px; }
+  .mono { font-family: ui-monospace, Menlo, monospace; font-size: 11.5px; }
+  pre.narr {
+    white-space: pre-wrap; background: var(--page); border: 1px solid var(--grid);
+    border-radius: 8px; padding: 10px 12px; font-size: 12px; color: var(--ink-2);
+  }
+  .timeline { list-style: none; margin: 0; padding: 0; }
+  .timeline li { padding: 7px 0 7px 18px; border-left: 2px solid var(--grid); position: relative; }
+  .timeline li::before {
+    content: ""; position: absolute; left: -5px; top: 13px; width: 8px; height: 8px;
+    border-radius: 50%; background: var(--s1); border: 2px solid var(--surface-1);
+  }
+  .timeline .ts { color: var(--muted); font-size: 11.5px; }
+  .actions { display: flex; gap: 8px; margin: 10px 0; }
+  .actions button.primary {
+    background: var(--s1); border: none; color: #fff; border-radius: 8px;
+    padding: 7px 14px; font: inherit; cursor: pointer;
+  }
+  .actions button.danger { background: var(--critical); }
+  .flash { font-size: 12.5px; color: var(--good-text); margin-left: 8px; }
+  .empty { color: var(--muted); padding: 18px 0; text-align: center; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Disputes &amp; Claims — Operations Portal</h1>
+  <span class="sub" id="asof"></span>
+  <span class="spacer"></span>
+  <span class="chip" id="simChip" hidden><span class="dot" style="background:var(--muted)"></span><span id="simText">live sim</span></span>
+  <button class="ghost" id="simBtn" hidden>Pause</button>
+  <span class="chip" id="ledgerChip"><span class="dot" style="background:var(--muted)"></span>ledger</span>
+  <button class="ghost" id="themeBtn" aria-label="Toggle theme">◐ Theme</button>
+</header>
+<nav id="tabs">
+  <button data-tab="dash" class="active">Dashboard</button>
+  <button data-tab="risk">Clock risk</button>
+  <button data-tab="queues">Queues &amp; cases</button>
+  <button data-tab="gov">Policy, experiments &amp; model</button>
+</nav>
+<main>
+  <section id="tab-dash"></section>
+  <section id="tab-risk" hidden></section>
+  <section id="tab-queues" hidden></section>
+  <section id="tab-gov" hidden></section>
+  <section id="detail" hidden></section>
+</main>
+<div id="tooltip" role="status"></div>
+<script type="module" src="/static/app.js"></script>
+</body>
+</html>

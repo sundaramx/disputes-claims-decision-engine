@@ -1,0 +1,59 @@
+# Adjudication policy pack — tiers as discrete, legally reviewable objects (paper §4.2).
+# Model scores are INPUTS; these rules DECIDE. Champion/challenger are policy slots;
+# engine-level invariants (no auto-denial, PC-by-deadline, Reg Z pendency, notices)
+# are enforced OUTSIDE this pack and apply to every cohort (PLAN.md §15.7).
+id: adjudication
+version: "1.2.0"
+challenger_share: 20            # % of cases deterministically assigned to challenger
+cohorts:
+  CHAMPION:
+    tiers:
+      - id: T0_AUTO_PAY
+        description: Low-value, low-risk, clean history -> straight-through consumer pay
+        max_amount: 75
+        max_misuse_score: 0.25
+        max_claims_180d: 1
+        resolve_consumer: PAY_FINAL
+        recovery: FILE_CHARGEBACK_IF_CARD_AND_AMOUNT_GTE
+        recovery_min_amount: 25
+      - id: T1_PROVISIONAL_FAST
+        description: Standard risk -> immediate PC (Reg E) / pendency (Reg Z), standard investigation
+        max_misuse_score: 0.55
+        resolve_consumer: PROVISIONAL_NOW
+        recovery: EVALUATE_AFTER_INVESTIGATION
+      - id: T2_ENHANCED_INVESTIGATION
+        description: Elevated misuse risk -> evidence agent before credit hardens
+        max_misuse_score: 0.80
+        resolve_consumer: PROVISIONAL_BY_DEADLINE
+        recovery: EVALUATE_AFTER_INVESTIGATION
+      - id: T3_DEFENDED_DENIAL_CANDIDATE
+        description: High misuse risk -> enhanced evidence, human-only denial decision
+        max_misuse_score: 1.01
+        resolve_consumer: PROVISIONAL_BY_DEADLINE
+        recovery: EVALUATE_AFTER_INVESTIGATION
+  CHALLENGER:
+    # Hypothesis: wider straight-through band cuts cost without raising loss.
+    tiers:
+      - id: T0_AUTO_PAY
+        description: Wider auto-pay band (amount<=150, score<=0.35)
+        max_amount: 150
+        max_misuse_score: 0.35
+        max_claims_180d: 1
+        resolve_consumer: PAY_FINAL
+        recovery: FILE_CHARGEBACK_IF_CARD_AND_AMOUNT_GTE
+        recovery_min_amount: 25
+      - id: T1_PROVISIONAL_FAST
+        description: Standard risk band
+        max_misuse_score: 0.55
+        resolve_consumer: PROVISIONAL_NOW
+        recovery: EVALUATE_AFTER_INVESTIGATION
+      - id: T2_ENHANCED_INVESTIGATION
+        description: Elevated risk band (narrower than champion)
+        max_misuse_score: 0.75
+        resolve_consumer: PROVISIONAL_BY_DEADLINE
+        recovery: EVALUATE_AFTER_INVESTIGATION
+      - id: T3_DEFENDED_DENIAL_CANDIDATE
+        description: High misuse risk
+        max_misuse_score: 1.01
+        resolve_consumer: PROVISIONAL_BY_DEADLINE
+        recovery: EVALUATE_AFTER_INVESTIGATION
