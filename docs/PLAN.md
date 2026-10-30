@@ -2,7 +2,7 @@
 
 **Version:** 2.0 (confirmed after independent critique — see `CRITIQUE.md` for the 18
 findings and dispositions; §15 lists the amendments)
-**Source:** `Intelligent_Disputes_and_Claims.docx` (Sundar Thevar, July 2026 working draft)
+**Source:** `Intelligent_Disputes_and_Claims.docx` (Sundaram Thevar, July 2026 working draft)
 **Date:** 2026-08-01
 
 ---

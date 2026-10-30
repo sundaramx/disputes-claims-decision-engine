@@ -2,7 +2,7 @@
 
 A working reference implementation of the paper *Intelligent Disputes and Claims: An
 AI-Enabled Operating Model for the Dispute Lifecycle at a Large Card Issuer*
-(`Intelligent_Disputes_and_Claims.docx`). It builds the layer the paper says a large
+(`Intelligent_Disputes_and_Claims.docx`) by Sundaram Thevar. It builds the layer the paper says a large
 issuer should **build** — the AI decisioning layer and data foundation — around a
 lightweight case-management chassis, with the network utilities mocked behind
 rent-layer adapter interfaces.
@@ -89,3 +89,13 @@ or real-world rates.
 - `docs/PLAN.md` — the build contract (v2, post-critique).
 - `docs/CRITIQUE.md` — 18 adversarial review findings and their dispositions.
 - `docs/ARCHITECTURE.md` — layers, flows, invariants, sourcing decisions.
+
+## License
+
+Copyright © 2026 Sundaram Thevar. **All Rights Reserved.**
+
+This is proprietary work, not open source. The repository is publicly visible, but
+no permission is granted to use, copy, modify, or distribute any part of it —
+code, documentation, or the paper — without explicit prior written approval from
+Sundaram Thevar. See [`LICENSE`](LICENSE) for the full terms and how to request
+permission.
