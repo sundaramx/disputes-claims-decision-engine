@@ -55,6 +55,27 @@ invariants, deterministic replay, API).
   performance, score distribution, calibration, PSI drift status, retrain-from-
   outcomes, and full ledger chain verification.
 
+### Screenshots
+
+**Dashboard**
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/dashboard_dark.png">
+  <img alt="Operations portal dashboard" src="docs/screenshots/dashboard_light.png">
+</picture>
+
+**Clock risk**
+
+![Clock risk board](docs/screenshots/clock_risk.png)
+
+**Case detail**
+
+![Case detail view](docs/screenshots/case_detail.png)
+
+**Policy, experiments & model**
+
+![Policy, experiments and model governance](docs/screenshots/governance.png)
+
 ## Honesty notes (paper §10 preserved)
 
 Synthetic data is generated with overlapping class distributions, label noise, and
