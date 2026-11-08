@@ -11,8 +11,7 @@ the network utilities, keep a case-management chassis, and **build the AI
 decisioning layer and data foundation**: the layer that actually sets loss
 rates, cost per case, and customer experience.
 
-> This is a showcase only. The source code, policies, model, and the paper
-> itself are proprietary and are not published here.
+> This repository is a public showcase: screenshots and an overview. The source code is private.
 
 ## What it does
 
